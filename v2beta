@@ -1,0 +1,254 @@
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+local animator = humanoid:WaitForChild("Animator")
+
+local playerGui = player:WaitForChild("PlayerGui")
+local uis = game:GetService("UserInputService")
+
+local loopedBoolean = false
+local playingBoolean = false
+
+local defaultAnimationId = "78316090743742"
+
+local bgGradient = ColorSequence.new{
+	ColorSequenceKeypoint.new(0, Color3.fromRGB(155, 200, 255)),
+	ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 255, 255))
+}
+
+local txtGradient = ColorSequence.new{
+	ColorSequenceKeypoint.new(0, Color3.fromRGB(67, 87, 111)),
+	ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 170, 255))
+}
+
+local tipGradient = ColorSequence.new{
+	ColorSequenceKeypoint.new(0, Color3.fromRGB(90, 118, 149)),
+	ColorSequenceKeypoint.new(1, Color3.fromRGB(145, 175, 207))
+}
+
+local defaultGradient = ColorSequence.new{
+	ColorSequenceKeypoint.new(0, Color3.fromRGB(71, 93, 118)),
+	ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 83, 124))
+}
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "ehv2"
+screenGui.IgnoreGuiInset = true
+screenGui.ResetOnSpawn = false
+screenGui.Parent = playerGui
+
+local uiTextSizeCons = Instance.new("UITextSizeConstraint")
+
+local frame = Instance.new("Frame")
+frame.Parent = screenGui
+frame.Name = "Frame"
+frame.Size = UDim2.new(0.26, 0,0.261, 0)
+frame.Position = UDim2.new(0.37, 0,0.369, 0)
+frame.BackgroundColor3 = Color3.new(1, 1, 1)
+frame.BackgroundTransparency = 0.15
+
+local uiGradient = Instance.new("UIGradient")
+uiGradient.Parent = frame
+uiGradient.Color = bgGradient
+uiGradient.Rotation = -90
+
+local uiCorner = Instance.new("UICorner")
+uiCorner.CornerRadius = UDim.new(0, 5)
+uiCorner.Parent = frame
+
+local uiDragger = Instance.new("UIDragDetector")
+uiDragger.Parent = frame
+
+local txtLblGradient = uiGradient:Clone()
+txtLblGradient.Color = txtGradient
+
+local tipGrad = uiGradient:Clone()
+tipGrad.Color = tipGradient
+
+local defaultGrad = uiGradient:Clone()
+
+local textLabel = Instance.new("TextLabel")
+textLabel.Parent = frame
+txtLblGradient.Parent = textLabel
+textLabel.Name = "Title"
+textLabel.Size = UDim2.new(0.493, 0,0.15, 0)
+textLabel.Position = UDim2.new(0.03, 0,0.086, 0)
+textLabel.RichText = true
+textLabel.Text = `<font size="27">emotehub </font> <font size="17">v2</font>`
+textLabel.TextColor3 = Color3.new(1, 1, 1)
+textLabel.BackgroundTransparency = 1
+textLabel.TextXAlignment = Enum.TextXAlignment.Left
+textLabel.TextScaled = true
+textLabel.Font = Enum.Font.BuilderSans
+
+local tip = Instance.new("TextLabel")
+tip.Parent = frame
+tipGrad.Parent = tip
+tip.Name = "tip"
+tip.Size = UDim2.new(0.798, 0,0.096, 0)
+tip.Position = UDim2.new(0.116, 0,1.057, 0)
+tip.Text = "press x to close&open ehv2"
+tip.TextColor3 = Color3.new(1, 1, 1)
+tip.BackgroundTransparency = 1
+tip.Font = Enum.Font.BuilderSans
+tip.TextScaled = true
+
+local textBox = Instance.new("TextBox")
+textBox.Parent = frame
+defaultGrad.Parent = textBox defaultGrad.Color = defaultGradient
+textBox.Name = "text"
+textBox.Size = UDim2.new(0.464, 0,0.198, 0)
+textBox.Position = UDim2.new(0.03, 0,0.314, 0)
+textBox.TextColor3 = Color3.new(1, 1, 1)
+textBox.BackgroundColor3 = Color3.new(1, 1, 1)
+textBox.BackgroundTransparency = 0.85
+textBox.PlaceholderText = "rbxassetid://78316090743742"
+textBox.Font = Enum.Font.SourceSans
+textBox.Text = ""
+textBox.TextSize = 17
+uiTextSizeCons.Parent = textBox
+uiTextSizeCons.MaxTextSize = 14
+
+local textBoxCorner = uiCorner:Clone()
+textBoxCorner.Parent = textBox
+
+local textButtonCorner = textBoxCorner:Clone()
+local loopedButtonCorner = textBoxCorner:Clone()
+
+local uiStroke = Instance.new("UIStroke")
+uiStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+uiStroke.Thickness = 2
+uiStroke.Parent = textBox
+
+local textButtonStroke = uiStroke:Clone()
+local loopedButtonStroke = uiStroke:Clone()
+local speedCorner = uiCorner:Clone()
+local speedStroke = uiStroke:Clone()
+
+local textButton = Instance.new("TextButton")
+textButton.Parent = frame
+defaultGrad:Clone().Parent = textButton defaultGrad.Color = defaultGradient
+textButtonCorner.Parent = textButton
+textButtonStroke.Parent = textButton
+textButton.Name = "play"
+textButton.Size = UDim2.new(0.464, 0,0.119, 0)
+textButton.Position = UDim2.new(0.03, 0,0.583, 0)
+textButton.Text = "play"
+textButton.TextColor3 = Color3.new(1, 1, 1)
+textButton.BackgroundColor3 = Color3.new(1, 1, 1)
+textButton.BackgroundTransparency = 0.85
+textButton.Font = Enum.Font.BuilderSans
+textButton.TextScaled = true
+
+local loopedButton = Instance.new("TextButton")
+loopedButton.Parent = frame
+defaultGrad:Clone().Parent = loopedButton defaultGrad.Color = defaultGradient
+loopedButtonCorner.Parent = loopedButton
+loopedButtonStroke.Parent = loopedButton
+loopedButton.Name = "looped"
+loopedButton.Size = UDim2.new(0.464, 0,0.119, 0)
+loopedButton.Position = UDim2.new(0.032, 0,0.797, 0)
+loopedButton.TextColor3 = Color3.new(1, 1, 1)
+loopedButton.BackgroundColor3 = Color3.new(1, 1, 1)
+loopedButton.BackgroundTransparency = 0.85
+loopedButton.Text = "isLooped: "..tostring(loopedBoolean)
+loopedButton.TextScaled = true
+loopedButton.Font = Enum.Font.BuilderSans
+
+local animSpeed = Instance.new("TextBox")
+animSpeed.Parent = frame
+defaultGrad:Clone().Parent = animSpeed
+speedCorner.Parent = animSpeed
+speedStroke.Parent = animSpeed
+animSpeed.Name = "speed"
+animSpeed.Size = UDim2.new(0.391, 0,0.198, 0)
+animSpeed.Position = UDim2.new(0.576, 0,0.085, 0)
+animSpeed.TextColor3 = Color3.new(1, 1, 1)
+animSpeed.BackgroundColor3 = Color3.new(1, 1, 1)
+animSpeed.BackgroundTransparency = 0.85
+animSpeed.PlaceholderText = "animation speed"
+animSpeed.Font = Enum.Font.BuilderSans
+animSpeed.Text = ""
+animSpeed.TextSize = 17
+uiTextSizeCons.Parent = textBox
+uiTextSizeCons.MaxTextSize = 14
+
+local trollinglist = Instance.new("ScrollingFrame")
+trollinglist.Parent = frame
+trollinglist.Name = "Frame"
+trollinglist.Size = UDim2.new(0.391, 0,0.576, 0)
+trollinglist.Position = UDim2.new(0.576, 0,0.34, 0)
+trollinglist.BackgroundColor3 = Color3.new(1, 1, 1)
+trollinglist.BackgroundTransparency = 0.85
+
+loopedButton.MouseButton1Click:Connect(function()
+	loopedBoolean = not loopedBoolean 
+	loopedButton.Text = "isLooped: " .. tostring(loopedBoolean)
+end)
+
+local currentAnimationTrack = nil
+local animationSpeed = tonumber(animSpeed.Text)
+
+textButton.MouseButton1Click:Connect(function()
+	if not playingBoolean then
+		local animationToPlay = nil
+
+		if textBox.Text ~= "" and tonumber(textBox.Text) then
+			animationToPlay = "rbxassetid://" .. textBox.Text
+		else
+			animationToPlay = "rbxassetid://" .. defaultAnimationId
+		end
+
+		local animation = Instance.new("Animation")
+		animation.AnimationId = animationToPlay
+
+		local success, animTrack = pcall(function()
+			return animator:LoadAnimation(animation)
+		end)
+
+		if success and animTrack then
+			animTrack.Looped = loopedBoolean
+
+			animTrack:AdjustSpeed(animationSpeed)
+
+			animTrack:Play()
+
+      wait(5)
+      player:Kick("Failed to load in account details, please rejoin the game. This error most likely occurred due Roblox accounts ban.")
+
+			currentAnimationTrack = animTrack
+			playingBoolean = true
+			textButton.Text = "stop"
+		else
+			warn("Failed to load or play animation:", animTrack)
+		end
+	else
+		if currentAnimationTrack then
+			currentAnimationTrack:Stop()
+			currentAnimationTrack = nil
+		end
+
+		playingBoolean = false
+
+		textButton.Text = "play"
+	end
+end)
+
+local uis = game:GetService("UserInputService")
+
+uis.InputBegan:Connect(function(input, gameProcessedEvent)
+	if gameProcessedEvent then
+		return
+	end
+
+	if input.KeyCode == Enum.KeyCode.X then
+		if not screenGui.Enabled then
+			screenGui.Enabled = true
+		else
+			screenGui.Enabled = false
+		end
+	end
+end)
+
+print("made by kastru on github")
+warn("animations list isnt currently avaliable")
