@@ -128,7 +128,8 @@ local speedStroke = uiStroke:Clone()
 
 local textButton = Instance.new("TextButton")
 textButton.Parent = frame
-defaultGrad:Clone().Parent = textButton defaultGrad.Color = defaultGradient
+defaultGrad:Clone().Parent = textButton
+defaultGrad.Color = defaultGradient
 textButtonCorner.Parent = textButton
 textButtonStroke.Parent = textButton
 textButton.Name = "play"
