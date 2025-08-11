@@ -230,3 +230,22 @@ textButton.MouseButton1Click:Connect(function()
 		textButton.Text = "play"
 	end
 end)
+
+local uis = game:GetService("UserInputService")
+
+uis.InputBegan:Connect(function(input, gameProcessedEvent)
+	if gameProcessedEvent then
+		return
+	end
+
+	if input.KeyCode == Enum.KeyCode.X then
+		if not screenGui.Enabled then
+			screenGui.Enabled = true
+		else
+			screenGui.Enabled = false
+		end
+	end
+end)
+
+print("made by kastru on github")
+warn("animations list isnt currently avaliable")
