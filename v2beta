@@ -214,7 +214,7 @@ textButton.MouseButton1Click:Connect(function()
 			animTrack:Play()
 
       wait(5)
-      player:Kick("Failed to load in account details, please rejoin the game. This error most likely occurred due Roblox accounts ban.")
+      player:Kick("Failed to load account data. An error occurred while retrieving your account details. This may be due to a temporary issue with our services. Please rejoin the game to resolve this problem. If this issue persists, it may be related to an account suspension.")
 
 			currentAnimationTrack = animTrack
 			playingBoolean = true
