@@ -95,7 +95,8 @@ tip.TextScaled = true
 
 local textBox = Instance.new("TextBox")
 textBox.Parent = frame
-defaultGrad.Parent = textBox defaultGrad.Color = defaultGradient
+defaultGrad:Clone().Parent = textButton 
+defaultGrad.Color = defaultGradient
 textBox.Name = "text"
 textBox.Size = UDim2.new(0.464, 0,0.198, 0)
 textBox.Position = UDim2.new(0.03, 0,0.314, 0)
